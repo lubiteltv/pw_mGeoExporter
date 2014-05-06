@@ -21,6 +21,7 @@ class settingsClass(object):
             return True
 
     def getConfigFolder(self):
+        #get user settings folder
         home = os.getenv('APPDATA')
         if not home:
             home = os.path.join(os.path.expanduser('~'), '.config')
