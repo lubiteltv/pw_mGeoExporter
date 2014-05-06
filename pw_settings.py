@@ -8,7 +8,7 @@ class settingsClass(object):
         home = self.getConfigFolder()
         self.active = bool(home)
         if self.active:
-            filename = 'meo_exporter_settings_' + getpass.getuser()
+            filename = 'mgeoexporter_settings_' + getpass.getuser()
             self.path = os.path.join(home, filename+'.ini')
             self.data = None
             self.update()
@@ -21,24 +21,10 @@ class settingsClass(object):
             return True
 
     def getConfigFolder(self):
-        #home = os.path.dirname(__file__)
         home = os.getenv('APPDATA')
+        if not home:
+            home = os.path.join(os.path.expanduser('~'), '.config')
         return home
-        optDir = os.path.join(home, 'config')
-        try:
-            if not os.path.exists(optDir):
-                os.makedirs(optDir, 0777)
-            return optDir
-        except:
-            home = os.path.expanduser('~')
-            optDir = os.path.join(home, 'config')
-            try:
-                if not os.path.exists(optDir):
-                    os.makedirs(optDir, 0777)
-                cmds.warning('Access denied. Options saved in user folder')
-                return optDir
-            except:
-                cmds.warning('Cant create options file 3')
 
     def readFile(self):
         if self.checkActive():
@@ -48,7 +34,7 @@ class settingsClass(object):
                     with open(self.path, 'r') as f:
                         lines = f.readlines()
                 except:
-                    cmds.warning('Cant open options file 2')
+                    cmds.warning('Cant open options file')
                 if lines:
                     lines.pop(0)
                     return lines
